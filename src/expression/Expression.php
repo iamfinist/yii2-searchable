@@ -64,7 +64,7 @@ abstract class Expression extends BaseObject implements ExpressionInterface
         $modelClass = $this->query->modelClass;
         list(, $alias) = $this->getTableNameAndAlias();
 
-        return '{{' . $alias . '}}.[[' . $modelClass::searchableKey() . ']]';
+        return '' . $alias . '.[[' . $modelClass::searchableKey() . ']]';
     }
 
     /**

@@ -27,20 +27,17 @@ class OrderBy extends Expression
     {
         $position = 1;
         $cases = ['CASE'];
-        $params = [];
-        $searchableKey = $this->searchableKey();
+        $searchableKey = $this->searchableKey ();
 
-        foreach ($this->ids as $id) {
-            $paramName = ":sob{$position}";
-            $cases[] = "WHEN {$searchableKey} = {$paramName} THEN {$position}";
-            $params[$paramName] = $id;
-            $position++;
+        foreach ( $this->ids as $id ) {
+            $cases [] = "WHEN {$searchableKey} = $id THEN {$position}";
+            $position ++;
         }
 
-        $cases[] = "ELSE {$position}";
-        $cases[] = 'END ASC';
+        $cases [] = "ELSE {$position}";
+        $cases [] = 'END ASC';
 
-        return new DbExpression(implode(' ', $cases), $params);
+        return new DbExpression ( implode ( ' ', $cases ) );
     }
 
 
