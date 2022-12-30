@@ -26,7 +26,7 @@ class SearchableBehaviorTest extends TestCase
         $model->article = 'testSync';
         $model->save(false);
 
-        $models = Model::search('testSync')->all();
+        $models = Model::searchableSearch('testSync')->all();
         $this->assertEquals(1, count($models));
     }
 
@@ -37,7 +37,7 @@ class SearchableBehaviorTest extends TestCase
             $model->article = 'testUnSync';
             $model->save(false);
 
-            $models = Model::search('testUnSync')->all();
+            $models = Model::searchableSearch('testUnSync')->all();
             $this->assertEquals(0, count($models));
         });
     }
@@ -49,7 +49,7 @@ class SearchableBehaviorTest extends TestCase
         $model->article = 'testShouldBeSearchable';
         $model->save(false);
 
-        $models = Model::search('testShouldBeSearchable')->all();
+        $models = Model::searchableSearch('testShouldBeSearchable')->all();
         $this->assertEquals(0, count($models));
     }
 
@@ -61,10 +61,10 @@ class SearchableBehaviorTest extends TestCase
         ]);
 
         $model->save(false);
-        $modelSearch = Model::search('testDeleteSync title')->one();
+        $modelSearch = Model::searchableSearch('testDeleteSync title')->one();
         $this->assertNotNull($modelSearch);
         $modelSearch->delete();
-        $modelSearch = Model::search('testDeleteSync title')->one();
+        $modelSearch = Model::searchableSearch('testDeleteSync title')->one();
         $this->assertNull($modelSearch);
     }
 
@@ -76,7 +76,7 @@ class SearchableBehaviorTest extends TestCase
         ]);
 
         $model->save(false);
-        $modelSearch = Model::search('testDeleteUnSync title')->one();
+        $modelSearch = Model::searchableSearch('testDeleteUnSync title')->one();
         $this->assertNotNull($modelSearch);
 
         Model::withoutSyncingToSearch(function () use ($model) {
@@ -90,12 +90,12 @@ class SearchableBehaviorTest extends TestCase
     {
         Model::makeAllSearchable();
         $ids = Model::searchIds('Romeo');
-        $models = Model::search('Romeo')->all();
+        $models = Model::searchableSearch('Romeo')->all();
         $modelIds = ArrayHelper::getColumn($models, 'id');
 
         $this->assertEquals($ids, $modelIds);
 
-        $models = Model::search('Romeo')->addOrderBy(['article' => SORT_DESC])->all();
+        $models = Model::searchableSearch('Romeo')->addOrderBy(['article' => SORT_DESC])->all();
         $modelIds = ArrayHelper::getColumn($models, 'id');
 
         $this->assertNotEquals($ids, $modelIds);
